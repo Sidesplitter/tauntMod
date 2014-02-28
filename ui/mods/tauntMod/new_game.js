@@ -1,19 +1,24 @@
 $(document).on('ready', function(){
 
-	//In-Game
-	$(".div_chat_log_feed").bind("DOMSubtreeModified", function(){
+	var prevLength = 0;
 
-		var message = $($(this).children()[$(this).children().length - 1]).text().trim().split(":")[1];
+	//Lobby	
+	$("#chat-bar .container_embed").bind("DOMSubtreeModified", function(){
+
+		var message = $('.chat_message:last').text().trim().split(":")[1].trim();
 
 		//Make sure it doesn't get called twice
-		if(message == undefined || message == "") return;
-		if($('.chat_message_body:last').attr("tauntchecked") == "tauntchecked") return;
-		$('.chat_message_body:last').attr("tauntchecked", "tauntchecked");
+		if(message == undefined || message == "") 
+			return;
+		//No new taunts are added
+		if($(".chat_message").length == prevLength) 
+			return;
 
-		message = message.trim()
+		prevLength = $(".chat_message").length;
 
 		//Search for Taunt(Name)
 		var match = message.match(/^TauntMod\((.*)\)/);
+
 
 		//We found something
 		if(match){
@@ -28,10 +33,10 @@ $(document).on('ready', function(){
 				}
 			});
 		}
-		
+
 		if(taunts[message]) taunts[message].play();
 	});
-	
+
 	$(".input_chat_text").bind("change", function(e){
 
 		var val = $(this).val().trim();
