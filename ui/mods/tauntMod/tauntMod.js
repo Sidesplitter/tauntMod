@@ -90,10 +90,10 @@ function Taunt(word, name, path){
 
 		//Maximum of five taunts at the same time to prevent spamming
 		if(context.activeSourceCount >= parseInt(settings.tauntsMax)) return;
-
+		
 		//Create Gain
 		var volume = context.createGainNode();
-		volume.gain.value = settings.tauntVolume / 10;
+		volume.gain.value = settings.tauntVolume / 10 * settings.master_volume / 100;
 
 		//Create audio source
 		var source = context.createBufferSource();
