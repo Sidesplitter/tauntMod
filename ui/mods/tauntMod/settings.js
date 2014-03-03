@@ -1,5 +1,18 @@
-console.log("TEST");
+var colors = [
+	"NONE",
+	"PURPLE",	
+	"RED",		
+	"ORANGE",	
+	"BLUE",		
+	"WHITE",		
+	"YELLOW",	
+	"GREEN", 	
+	"BLACK", 	
+	"DARK BLUE",	
+	"PINK",		
+	"BROWN"		
+]
 
-model.addSettingGroup("AUDIO", "TAUNTMOD");
-model.addSetting_Slider("VOLUME", "tauntVolume", "AUDIO", 0, 10, 10, "TAUNTMOD");
-model.addSetting_Text("MAX. TAUNTS PLAYING", "tauntsMax", "AUDIO", "Number", "5", "TAUNTMOD");
+model.addSettingGroup("UI", "FAVORITE COMMANDER & COLOR");
+model.addSetting_DropDown("Color", "favColor", "UI", colors, 0, "FAVORITE COMMANDER & COLOR");
+model.addSetting_DropDown("Alt. Color", "favColorAlt", "UI", colors, 0, "FAVORITE COMMANDER & COLOR");

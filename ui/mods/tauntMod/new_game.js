@@ -16,41 +16,48 @@ $(document).on('ready', function(){
 
 		prevLength = $(".chat_message").length;
 
-		//Search for Taunt(Name)
-		var match = message.match(/^TauntMod\((.*)\)/);
+		//Loop through tauntPacks
+		$.each(tauntPacks, function(k, v){
 
+			//Loop through taunts
+			for(var taunt in v.getTaunts()){
 
-		//We found something
-		if(match){
+				//Found a taunt by match
+				if(message.match(v.getTaunts()[taunt].getMatch()) && !v.getTaunts()[taunt].getReplace()){
 
-			//Loop through all taunts
-			$.each(taunts, function(k, v){
-				//Found a match
-				if(match[1] == v.name){
-					//Play it
-					v.play();
-					return;
+					v.getTaunts()[taunt].play();
+					return false;
+
+				//Found a taunt by replaced value
+				}else if(message.match(/^TauntMod\((.*)\)/) && message.match(/^TauntMod\((.*)\)/)[1].match(v.getTaunts()[taunt].getName())){
+
+					v.getTaunts()[taunt].play();
+					return false;
 				}
-			});
-		}
-
-		if(taunts[message]) taunts[message].play();
+			}
+		});
 	});
 
 	$(".input_chat_text").bind("change", function(e){
 
 		var val = $(this).val().trim();
 
-		$.each(taunts, function(k, v){
- 			
- 			//Check if the chatmessage is the taunt
-			if(val == v.word){
+		//Loop through all the TauntPacks
+		$.each(tauntPacks, function(k, v){
 
-				//Replace it and exit the loop
-				val = "TauntMod(" + v.name + ")";
-				return false;
+			//Loop through all the taunts
+			for(var taunt in v.getTaunts()){
+
+				//Check if it matches with the taunt
+				if(val.match(v.getTaunts()[taunt].getMatch())){
+
+					//Does it want to be replaced
+					if(v.getTaunts()[taunt].getReplace())
+						val = "TauntMod(" + v.getTaunts()[taunt].getName() + ")";
+					return false;
+				}
 			}
-		})
+		});
 
 		$(this).val(val);
 	});
